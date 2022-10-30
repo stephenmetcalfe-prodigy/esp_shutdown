@@ -11,6 +11,7 @@ cmd = config['ESPSettings']['Command']
 
 url = config['ESPSettings']['Url']
 querystring = {"id":config['ESPSettings']['Area']}
+# querystring = {"id":config['ESPSettings']['Area'],"test":"future"} # Use this for development
 headers = {"Token": config['ESPSettings']['ApiToken']}
 
 def get_next_blackout(data):

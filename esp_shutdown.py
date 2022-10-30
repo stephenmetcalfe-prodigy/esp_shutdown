@@ -10,7 +10,7 @@ cat = pytz.timezone("Africa/Johannesburg")
 cmd = config['ESPSettings']['Command']
 
 url = config['ESPSettings']['Url']
-querystring = {"id":config['ESPSettings']['Area']}
+querystring = {"id":config['ESPSettings']['Area']} # Use for production. Uses quota
 # querystring = {"id":config['ESPSettings']['Area'],"test":"future"} # Use this for development
 headers = {"Token": config['ESPSettings']['ApiToken']}
 

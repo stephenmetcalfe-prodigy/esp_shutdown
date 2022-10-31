@@ -8,6 +8,7 @@ import helper
 config = helper.read_config()
 cat = pytz.timezone("Africa/Johannesburg")
 cmd = config['ESPSettings']['Command']
+shutdown_message = config['ESPSettings']['ShutdownMessage']
 
 url = config['ESPSettings']['Url']
 querystring = {"id":config['ESPSettings']['Area']} # Use for production. Uses quota
@@ -28,7 +29,7 @@ if response:
     shutdown_time = next_blackout - timedelta(minutes=1)
     if next_blackout <= now.astimezone(cat) + timedelta(hours=1):
         print("Next blackout is at " + str(next_blackout))
-        os.system(cmd + str(now.hour) + ':59')
+        os.system(cmd + str(now.hour) + ':59' + ' ' + shutdown_message)
     else:
         print("No need to panic. Next blackout is at " + str(next_blackout))
 else:

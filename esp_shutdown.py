@@ -11,7 +11,7 @@ cmd = config['ESPSettings']['Command']
 shutdown_message = config['ESPSettings']['ShutdownMessage']
 
 url = config['ESPSettings']['Url']
-querystring = {"id":config['ESPSettings']['Area']} # Use for production. Uses quota
+querystring = {"id":config['ESPSettings']['Area']} # Use for production. Counts towards quota
 # querystring = {"id":config['ESPSettings']['Area'],"test":"future"} # Use this for development
 headers = {"Token": config['ESPSettings']['ApiToken']}
 
@@ -27,9 +27,11 @@ if response:
     next_blackout = get_next_blackout(data)
     now = datetime.now()
     shutdown_time = next_blackout - timedelta(minutes=1)
+    shutdown_time = shutdown_time.strftime("%H:%M")
     if next_blackout <= now.astimezone(cat) + timedelta(hours=1):
         print("Next blackout is at " + str(next_blackout))
-        os.system(cmd + str(now.hour) + ':59' + ' ' + shutdown_message)
+        cmd += ' ' + shutdown_time + ' ' + shutdown_message
+        os.system(cmd)
     else:
         print("No need to panic. Next blackout is at " + str(next_blackout))
 else:

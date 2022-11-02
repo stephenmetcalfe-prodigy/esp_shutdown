@@ -25,9 +25,7 @@ Your area code can be determined by using the EskomSePush API as follows:
 Take the resulting id for the area that fits you and put that under `Area` 
 
 ### To Do
-- Add logging/reporting
+- ~Add logging/reporting~ (done)
 - Refactor
 - Add error handling
-- Refactor..
 - Wrap in service that can handle the cron management?
-- Refactor....

@@ -1,10 +1,12 @@
 import requests
 import dateutil.parser
+import logging
 import pytz
 import os
 from datetime import datetime, timedelta
 import helper
 
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 config = helper.read_config()
 cat = pytz.timezone("Africa/Johannesburg")
 cmd = config['ESPSettings']['Command']
@@ -20,6 +22,7 @@ def get_next_blackout(data):
     start_date = dateutil.parser.parse(events["start"])
     return cat.normalize(start_date.astimezone((cat)))
 
+logging.debug("Getting updates from api")
 response = requests.request("GET", url, data="", headers=headers, params=querystring)
 
 if response:
@@ -29,11 +32,11 @@ if response:
     shutdown_time = next_blackout - timedelta(minutes=1)
     shutdown_time = shutdown_time.strftime("%H:%M")
     if next_blackout <= now.astimezone(cat) + timedelta(hours=1):
-        print("Next blackout is at " + str(next_blackout))
+        logging.info("Next blackout is at " + str(next_blackout))
         cmd += ' ' + shutdown_time + ' ' + shutdown_message
         os.system(cmd)
     else:
-        print("No need to panic. Next blackout is at " + str(next_blackout))
+        logging.debug("No need to panic. Next blackout is at " + str(next_blackout))
 else:
-    print('Unsuccessful request')
+    logging.error('Unsuccessful request')
 

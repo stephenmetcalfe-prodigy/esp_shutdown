@@ -14,7 +14,8 @@ shutdown_message = config['ESPSettings']['ShutdownMessage']
 
 url = config['ESPSettings']['Url']
 querystring = {"id":config['ESPSettings']['Area']} # Use for production. Counts towards quota
-# querystring = {"id":config['ESPSettings']['Area'],"test":"future"} # Use this for development
+if config['ESPSetting']['Test'] == True:
+    querystring = {"id":config['ESPSettings']['Area'],"test":"future"} # Use this for development
 headers = {"Token": config['ESPSettings']['ApiToken']}
 
 def get_next_blackout(data):

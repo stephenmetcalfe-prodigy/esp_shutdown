@@ -13,15 +13,17 @@ cmd = config['ESPSettings']['Command']
 shutdown_message = config['ESPSettings']['ShutdownMessage']
 
 url = config['ESPSettings']['Url']
-querystring = {"id":config['ESPSettings']['Area']} # Use for production. Counts towards quota
-if config['ESPSetting']['Test'] == True:
-    querystring = {"id":config['ESPSettings']['Area'],"test":"future"} # Use this for development
+querystring = {"id": config['ESPSettings']['Area']}  # Use for production. Counts towards quota
+if config['ESPSetting']['Test']:
+    querystring = {"id": config['ESPSettings']['Area'], "test": "future"}  # Use this for development
 headers = {"Token": config['ESPSettings']['ApiToken']}
 
-def get_next_blackout(data):
-    events = data["events"][0]
+
+def get_next_blackout(response_data):
+    events = response_data["events"][0]
     start_date = dateutil.parser.parse(events["start"])
-    return cat.normalize(start_date.astimezone((cat)))
+    return cat.normalize(start_date.astimezone(cat))
+
 
 logging.debug("Getting updates from api")
 response = requests.request("GET", url, data="", headers=headers, params=querystring)
@@ -40,4 +42,3 @@ if response:
         logging.debug("No need to panic. Next blackout is at " + str(next_blackout))
 else:
     logging.error('Unsuccessful request')
-

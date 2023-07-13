@@ -32,12 +32,13 @@ if response:
     data = response.json()
     next_blackout = get_next_blackout(data)
     now = datetime.now()
-    shutdown_time = next_blackout - timedelta(minutes=1)
-    shutdown_time = shutdown_time.strftime("%H:%M")
-    if next_blackout <= now.astimezone(cat) + timedelta(hours=1):
-        logging.info("Next blackout is at " + str(next_blackout))
-        cmd += ' ' + shutdown_time + ' ' + shutdown_message
-        os.system(cmd)
+    if next_blackout <= now.astimezone(cat) + timedelta(days=1):
+        shutdown_time = next_blackout - timedelta(minutes=1)
+        shutdown_time = shutdown_time.strftime("%H:%M")
+        if next_blackout <= now.astimezone(cat) + timedelta(hours=1):
+            logging.info("Next blackout is at " + str(next_blackout))
+            cmd += ' ' + shutdown_time + ' ' + shutdown_message
+            os.system(cmd)
     else:
         logging.debug("No need to panic. Next blackout is at " + str(next_blackout))
 else:

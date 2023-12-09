@@ -14,7 +14,7 @@ shutdown_message = config['ESPSettings']['ShutdownMessage']
 
 url = config['ESPSettings']['Url']
 querystring = {"id": config['ESPSettings']['Area']}  # Use for production. Counts towards quota
-if config['ESPSetting']['Test']:
+if config['ESPSettings']['Test']:
     querystring = {"id": config['ESPSettings']['Area'], "test": "future"}  # Use this for development
 headers = {"Token": config['ESPSettings']['ApiToken']}
 
